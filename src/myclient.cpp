@@ -11,6 +11,7 @@
 
 #include <fitsio.h>
 #include "tools.hpp"
+#include <unistd.h>
 
 // #include "/usr/include/libindi/indiccd.h"
 #include "QThread"

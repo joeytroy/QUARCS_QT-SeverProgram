@@ -21,7 +21,7 @@
 #include <QObject>
 #include <QDebug>
 
-#include <stellarsolver.h>
+#include "stellarsolver.h"
 
 #define Min2(a, b) ((a) < (b) ? (a) : (b))
 #define Max2(a, b) ((a) > (b) ? (a) : (b))

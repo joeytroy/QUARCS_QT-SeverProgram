@@ -32,7 +32,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <stellarsolver.h>
+#include "stellarsolver.h"
 
 #include "platesolveworker.h"
 
