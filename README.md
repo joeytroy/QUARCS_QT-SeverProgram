@@ -2,7 +2,7 @@
 
 <img align="left" src="https://www.raspberrypi.com/app/uploads/2020/06/raspberrry_pi_logo.png" width="48">
 
-These instructions are written for **Ubuntu 24.04.1 LTS Server (64-bit) ARM** for **Raspberry Pi Models** more details and supported images located on the [Ubuntu Website](https://ubuntu.com/download/raspberry-pi). All commands should be run via SSH on the Raspberry Pi connected to the internet. Please follow the steps carefully, as the setup process involves numerous commands and software builds. If this is your first time using a Raspberry Pi please check out the [Raspberry Pi Website](https://www.raspberrypi.com/software/) which will allow you to download the Raspberry Pi Imager.
+These instructions are written for **Ubuntu 24.04.1 LTS Server (64-bit) ARM** for **Raspberry Pi Models** more details and supported devices are located on the [Ubuntu Website](https://ubuntu.com/download/raspberry-pi). All commands should be run via SSH on the Raspberry Pi connected to the internet. Please follow the steps carefully, as the setup process involves numerous commands and software builds. If this is your first time using a Raspberry Pi please check out the [Raspberry Pi Website](https://www.raspberrypi.com/software/) which will allow you to download the Raspberry Pi Imager.
 
 ---
 
