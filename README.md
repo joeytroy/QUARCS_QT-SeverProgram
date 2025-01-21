@@ -1,199 +1,144 @@
-QUARCS_QT-SeverProgram
-=====================
+# QUARCS_QT-ServerProgram
 
-Ubuntu 22.04
+<img align="left" src="https://www.raspberrypi.com/app/uploads/2020/06/raspberrry_pi_logo.png" width="48">
 
-1、Install Pre-requisites:
--
+These instructions are written for **Ubuntu 24.04.1 LTS Server (64-bit)** on **Raspberry Pi 4 and 5**. All commands should be run via SSH on the Raspberry Pi connected to the internet. Please follow the steps carefully, as the setup process involves numerous commands and software builds.
 
-	sudo apt-get update
-	sudo apt-get upgrade
-	sudo apt-get install subversion
-	sudo apt install build-essential cmake zlib1g-dev libgl1-mesa-dev libdrm-dev gcc g++ 
-	sudo apt install graphviz doxygen gettext git 
-	sudo apt-get install libxcb-xinerama0
-	sudo snap install cmake --classic //此命令可以按照较新版本的cmake，Ubuntu18.04安装版本为3.25.2
-	sudo apt-get install gnome-keyring
-	sudo apt-get install libusb-1.0.0-dev
-	sudo apt-get install libcfitsio-dev
-	sudo apt-get install astrometry.net
-	sudo apt-get install astrometry-data-tycho2
+---
 
-2、Install OPENCV:
--
-Compile opencv from source and install it. (Recommended opencv version: 3.4.14 or 3.4.16)
-Download link for version 3.4.14: https://codeload.github.com/opencv/opencv/zip/refs/tags/3.4.14
+## 1. OS Pre-requisites
 
-1.Environment configuration:
+### Update the OS
+First, update and upgrade the operating system:
 
-		sudo apt-get install build-essential 
-		sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
-		sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-dev
-	
- 2.Compile and install:
-  
-		cd opencv-3.4.14
-		mkdir build
-		cd build
-		sudo cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local ..
-		sudo make	// sudo make -j4 
-		sudo make install
-		
-3.Add path:
-  
-  	sudo gedit /etc/ld.so.conf
-  
-4.Add the following line to the file:
-
-  	/usr/loacal/lib
-		
-5.Save and close, then run:
-
-	sudo ldconfig
-
-6.Configure environment: (Open .bashrc file)
- 
- 	sudo gedit /etc/bash.bashrc 
-   
-7.Add the following two lines at the end:
-
-	PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-	export PKG_CONFIG_PATH
- 
-8.Save and exit, then in the terminal:
-
-	source /etc/bash.bashrc
-
-9.Enter the following command to check the installed opencv version:
-
-	pkg-config opencv --modversion
-
-3、Install QHYCCD SDK
--
-Download link for the compressed package: https://www.qhyccd.com/file/repository/publish/SDK/240109/sdk_linux64_24.01.09.tgz
-
-Installation steps:
-
-	tar xvf sdk_linux64_24.01.09.tgz
-	cd sdk_linux64_24.01.09
-	sudo bash install.sh
-
-4、Install indi and indi-3rdparty driver library
--
-
-Installation steps:
-1. indi:
-   
-   Install Pre-requisites
-   
-		  sudo apt-get install -y \
-		  git \
-		  cdbs \
-		  dkms \
-		  cmake \
-		  fxload \
-		  libev-dev \
-		  libgps-dev \
-		  libgsl-dev \
-		  libraw-dev \
-		  libusb-dev \
-		  zlib1g-dev \
-		  libftdi-dev \
-		  libjpeg-dev \
-		  libkrb5-dev \
-		  libnova-dev \
-		  libtiff-dev \
-		  libfftw3-dev \
-		  librtlsdr-dev \
-		  libcfitsio-dev \
-		  libgphoto2-dev \
-		  build-essential \
-		  libusb-1.0-0-dev \
-		  libdc1394-dev \
-		  libboost-regex-dev \
-		  libcurl4-gnutls-dev \
-		  libtheora-dev
-   
-   Create Project Directory
-   
-		mkdir -p ~/Projects
-		cd ~/Projects
-
-   Get the code
-   
-		git clone https://github.com/indilib/indi.git
-
-   Build indi-core (cmake)
-
-		mkdir -p ~/Projects/build/indi-core
-		cd ~/Projects/build/indi-core
-		cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug ~/Projects/indi
-		make -j4
-		sudo make install
-
-2. indi-3rdparty:
-   
-   Install Pre-requisites
-   
-		  sudo apt-get -y install libnova-dev libcfitsio-dev libusb-1.0-0-dev zlib1g-dev libgsl-dev build-essential cmake git libjpeg-dev libcurl4-gnutls-dev libtiff-dev libfftw3-dev libftdi-dev libgps-dev libraw-dev libdc1394-dev libgphoto2-dev libboost-dev libboost-regex-dev librtlsdr-dev liblimesuite-dev libftdi1-dev libavcodec-dev libavdevice-dev libindi-dev
-   
-   Create Project Directory(It can be in the same folder as the first step of installing indi)
-   
-		mkdir -p ~/Projects
-		cd ~/Projects
-
-   Get the code
-   
-		git clone https://github.com/indilib/indi-3rdparty
-
-   Building all the 3rd Party Libraries
-
-		mkdir -p ~/Projects/build/indi-3rdparty-libs
-		cd ~/Projects/build/indi-3rdparty-libs
-		cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 ~/Projects/indi-3rdparty
-		make -j4
-		sudo make install
-
-   Building all the 3rd Party Drivers
-
-		mkdir -p ~/Projects/build/indi-3rdparty
-		cd ~/Projects/build/indi-3rdparty
-		cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug ~/Projects/indi-3rdparty
-		make -j4
-		sudo make install
-   
-
-5、Install QT components:
--
-	sudo apt install qtcreator qtbase5-dev qtscript5-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev libqt5opengl5-dev qtmultimedia5-dev libqt5multimedia5-plugins libqt5serialport5 libqt5serialport5-dev qtpositioning5-dev libgps-dev libqt5positioning5 libqt5positioning5-plugins qtwebengine5-dev libqt5charts5-dev libqt5websockets5-dev
-
-6、Download QUARCS_QT-ServerProgram
-
-   You can fork the this project into your own repositories and download it into workspace folder(lets assume it is in ~/workspace)
-
-7、Compile and Run in VSCODE
-
-- VSCODE can be used as the editor for this project.
-- Install C/C++ Extension Pack in VScode's Extensions.	
-- Open the QUARCS_QT-SeverProgram folder, configure the project with Cmake, select /src/CmakeLists.txt, and then select CXX 11.4.0.
-- You can then run QT-SeverProgram directly in VScode.
-
-8、Compile and Run in Terminal (assume the project in ~/workspace/QUARCS_QT-SeverProgram)
-
-	cd ~/workspace/QUARCS_QT-SeverProgram/src
-	mkdir build
-	cd build
-	cmake ..
-	make 
-	make install
-   
-   the compiled filename is "client"  by default it is be installed in /usr/local/bin  you can run it
-
-	client
+		sudo apt update && sudo apt full-upgrade -y && sudo reboot 
 
 
+After rebooting, log back in via SSH. To check for any remaining updates, run:
+
+		apt list --upgradable 
 
 
-   
-Welcome to join the QUARUS Discod discussion group for online discussions (https://discord.gg/uHTPfJ5uuV)   
--   
+If updates are available, install them with:
+
+		sudo apt install <package_name> -y 
+
+
+For example:
+
+		sudo apt install python3-distupgrade -y 
+
+
+After confirming that all updates are complete, reboot the system again:
+
+		sudo reboot now 
+
+---
+
+## 2.Install QUARCS Pre-requisites:
+Install the required system dependencies by running:
+
+		sudo apt-get install subversion build-essential cmake zlib1g-dev libgl1-mesa-dev libdrm-dev gcc g++ graphviz doxygen gettext git libxcb-xinerama0 gnome-keyring libusb-1.0.0-dev libcfitsio-dev astrometry.net astrometry-data-tycho2 wget libopencv-dev python-dev-is-python3 libgtk2.0-dev pkg-config libavcodec-dev python3-opencv libavformat-dev libswscale-dev libtbbmalloc2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev -y 
+
+---
+
+## 3. Install OPENCV 3.4.18
+To install OpenCV 3.4.18, execute the following commands:
+
+		cd ~ 
+		wget https://github.com/opencv/opencv/archive/refs/tags/3.4.18.tar.gz 
+		tar -xvzf 3.4.18.tar.gz 
+		cd opencv-3.4.18/ 
+		mkdir build 
+		cd build 
+		sudo cmake -D CMAKE_BUILD_TYPE=Release -D WITH_FFMPEG=0 -D CMAKE_INSTALL_PREFIX=/usr/local .. 
+		sudo make -j$(nproc) 
+		sudo make install 
+
+
+**Verification**  
+To confirm OpenCV installation, check the installed version:
+
+		pkg-config opencv --modversion 
+
+You should see **3.4.18** displayed in the terminal.
+
+---
+
+## 4. Install QHYCCD SDK
+To download and install the QHYCCD SDK, run:
+
+		cd ~ 
+		wget https://www.qhyccd.com/file/repository/publish/SDK/240109/sdk_linux64_24.01.09.tgz 
+		tar xvf sdk_linux64_24.01.09.tgz 
+		cd sdk_linux64_24.01.09 
+		sudo bash install.sh 
+
+---
+
+## 5. Install INDI and INDI-3rd party driver libraries
+**Install INDI Prerequisites**  
+Run the following command to install prerequisites for INDI:
+
+		sudo apt-get install cdbs dkms fxload libev-dev libgps-dev libgsl-dev libraw-dev libusb-dev libftdi-dev libkrb5-dev libnova-dev libfftw3-dev librtlsdr-dev libgphoto2-dev libboost-regex-dev libcurl4-gnutls-dev libtheora-dev -y 
+
+
+**Install INDI Core**  
+To install the INDI Core software:
+
+		cd ~ 
+		mkdir -p ~/Projects 
+		cd ~/Projects 
+		git clone https://github.com/indilib/indi.git 
+		mkdir -p ~/Projects/build/indi-core 
+		cd ~/Projects/build/indi-core 
+		cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug ~/Projects/indi 
+		make -j$(nproc) 
+		sudo make install 
+
+
+**Install INDI 3rd-Party Prerequisites**  
+Install additional libraries for INDI 3rd-party drivers:
+
+		sudo apt-get install liblimesuite-dev libftdi1-dev libavdevice-dev libindi-dev -y 
+
+
+**Install INDI 3rd-Party Drivers**  
+Finally, install the INDI 3rd-party driver libraries:
+
+		cd ~/Projects 
+		git clone https://github.com/indilib/indi-3rdparty 
+		mkdir -p ~/Projects/build/indi-3rdparty-libs 
+		cd ~/Projects/build/indi-3rdparty-libs 
+		cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 ~/Projects/indi-3rdparty 
+		make -j$(nproc) 
+		sudo make install 
+
+---
+
+## 6. Install QT components
+**Install QT Prerequisites**  
+Run the following command to install the required QT libraries:
+
+		sudo apt install qtcreator qtbase5-dev qtscript5-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev libqt5opengl5-dev qtmultimedia5-dev libqt5multimedia5-plugins libqt5serialport5 libqt5serialport5-dev qtpositioning5-dev libqt5positioning5 libqt5positioning5-plugins qtwebengine5-dev libqt5charts5-dev libqt5websockets5-dev libstellarsolver2 libstellarsolver-dev -y 
+
+
+**Install QT Components**  
+To build and install the QT components:
+
+		cd ~ 
+		git clone --branch RPi4_5 https://github.com/joeytroy/QUARCS_QT-SeverProgram 
+		cd QUARCS_QT-SeverProgram/src/ 
+		mkdir build 
+		cd build 
+		cmake .. 
+		make -j$(nproc) 
+		sudo make install 
+
+
+This completes the installation of the **QUARCS_QT-ServerProgram**. To proceed further, you will need to install **QUARCS_phd2**.
+
+---
+
+## Need Assistance?
+If you need assistance, join the **[QUARCS Discord Discussion Group](https://discord.gg/uHTPfJ5uuV)** for support and discussions.      
